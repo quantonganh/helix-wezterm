@@ -1,0 +1,58 @@
+# This is an example .goreleaser.yml file with some sensible defaults.
+# Make sure to check the documentation at https://goreleaser.com
+builds:
+  - id: helix-wezterm
+    main: dummy.go
+    binary: helix-wezterm.sh
+    targets:
+      - darwin_arm64
+    hooks:
+      post:
+        - cp helix-wezterm.sh dist/helix-wezterm_darwin_arm64/
+  - id: helix-fzf
+    main: dummy.go
+    binary: helix-fzf.sh
+    targets:
+      - darwin_arm64
+    hooks:
+      post:
+        - cp helix-fzf.sh dist/helix-fzf_darwin_arm64/
+
+archives:
+  - format: tar.gz
+    # this name template makes the OS and Arch compatible with the results of uname.
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+      {{- if .Arm }}v{{ .Arm }}{{ end }}
+    # use zip for windows archives
+    format_overrides:
+    - goos: windows
+      format: zip
+checksum:
+  name_template: 'checksums.txt'
+snapshot:
+  name_template: "{{ incpatch .Version }}-next"
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+
+# The lines beneath this are called `modelines`. See `:help modeline`
+# Feel free to remove those if you don't want/use them.
+# yaml-language-server: $schema=https://goreleaser.com/static/schema.json
+# vim: set ts=2 sw=2 tw=0 fo=cnqoj
+
+brews:
+  - tap:
+      owner: quantonganh
+      name: homebrew-tap
+    homepage: https://github.com/quantonganh/helix-wezterm
+    description: >-
+      Turning Helix into an IDE with the help of WezTerm and CLI tools
+    license: MIT
