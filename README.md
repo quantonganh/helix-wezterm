@@ -1,6 +1,8 @@
 # helix-wezterm
 Turning Helix into an IDE with the help of WezTerm and CLI tools
 
+![Helix as IDE](https://github.com/quantonganh/blog/blob/master/2023/08/19/hx-ide.gif)
+
 ## Installation
 
 You can simply download [helix wezterm.sh](./helix-wezterm.sh) and [helix-fzf.sh](./helix-fzf.sh) to `~/.local/bin` and then add this directory to your `$PATH`.
