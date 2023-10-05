@@ -49,9 +49,10 @@ changelog:
 # vim: set ts=2 sw=2 tw=0 fo=cnqoj
 
 brews:
-  - tap:
+  - repository:
       owner: quantonganh
       name: homebrew-tap
+    folder: Formula
     homepage: https://github.com/quantonganh/helix-wezterm
     description: >-
       Turning Helix into an IDE with the help of WezTerm and CLI tools
