@@ -23,6 +23,7 @@ $ bpkg install quantonganh/helix-wezterm -g
 
 Install the requirements:
 
+- [fish shell](https://fishshell.com/)
 - [broot](https://github.com/Canop/broot)
 - [gh](https://cli.github.com/)
 - [lazygit](https://github.com/jesseduffield/lazygit)
