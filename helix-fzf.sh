@@ -5,7 +5,7 @@ top_pane_id=$(wezterm cli get-pane-direction Up)
 if [ -z "$selected_file" ]; then
     if [ -n "${top_pane_id}" ]; then
         wezterm cli activate-pane-direction --pane-id $top_pane_id Up
-        wezterm cli toggle-pane-zoom-state
+        wezterm cli zoom-pane --pane-id $top_pane_id
     fi
     exit 0
 fi
