@@ -1,7 +1,7 @@
 # helix-wezterm
 Turning Helix into an IDE with the help of WezTerm and CLI tools
 
-![Helix as IDE](https://github.com/quantonganh/blog/blob/master/2023/08/19/hx-ide.gif)
+![Helix as IDE](https://github.com/quantonganh/blog-posts/blob/main/2023/08/19/hx-ide.gif)
 
 ## Installation
 
