@@ -21,7 +21,7 @@ split_pane_down() {
   fi
 }
 
-pwd=$(PWD)
+pwd=$PWD
 basedir=$(dirname "$filename")
 basename=$(basename "$filename")
 basename_without_extension="${basename%.*}"
@@ -68,7 +68,7 @@ case "$1" in
     if [ "$program" = "lazygit" ]; then
         wezterm cli activate-pane-direction down
     else
-        echo "lazygit" | $send_to_bottom_pane
+        echo "cd $pwd; lazygit" | $send_to_bottom_pane
     fi
     ;;
   "open")
