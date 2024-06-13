@@ -32,7 +32,7 @@ Install the requirements:
 Add the following into `~/.config/helix/config.toml`:
 
 ```toml
-[keys.normal.";"]
+[keys.normal.space.","]
 b = ":sh helix-wezterm.sh blame"
 c = ":sh helix-wezterm.sh check"
 e = ":sh helix-wezterm.sh explorer"
