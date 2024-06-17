@@ -1,7 +1,24 @@
 # helix-wezterm
+
 Turning Helix into an IDE with the help of WezTerm and CLI tools
 
 ![Helix as IDE](https://github.com/quantonganh/blog-posts/blob/main/2023/08/19/hx-ide.gif)
+
+## Features
+
+The following sub-commands to helix-wezterm.sh are available:
+
+ * `blame` Uses `tig` to open a "Git blame" in a split view for the current line
+ * `check` Runs `cargo check` in a split window
+ * `exlorer` Runs `broot` in left-side pane to open file explorer
+ * `lazygit` Runs `lazygit` is split pane.
+ * `fzf` Runs ripgrep to search through every line in the project. Similar to global_search
+ * `howdoi` Runs `howdoi` with clipboard contents in a new split window.
+ * `open` Uses `gh browse` to open the current file and line number on Github
+ * `run` Calls commands in a new split window. See source code details.
+ * `test_all` Runs all tests with `go test` in new split window
+ * `test_single` Runs a single test in new pane based for the current file using `cargo test`
+ * `tgpt` Runs `tgpt` with clipboard contents in new pane.
 
 ## Installation
 
@@ -23,12 +40,15 @@ $ bpkg install quantonganh/helix-wezterm -g
 
 Install the requirements:
 
-- [fish shell](https://fishshell.com/)
-- [ripgrep](https://github.com/BurntSushi/ripgrep)
+- [bat](https://github.com/sharkdp/bat) for file previews
 - [broot](https://github.com/Canop/broot)
+- [fish shell](https://fishshell.com/)
 - [gh](https://cli.github.com/)
+- [howdoi](https://github.com/gleitz/howdoi)
 - [lazygit](https://github.com/jesseduffield/lazygit)
+- [ripgrep](https://github.com/BurntSushi/ripgrep) for grep-like searching
 - [tig](https://jonas.github.io/tig/)
+- [tgpt](https://github.com/aandrew-me/tgpt)
 
 Add the following into `~/.config/helix/config.toml`:
 
