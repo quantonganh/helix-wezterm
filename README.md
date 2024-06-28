@@ -1,6 +1,6 @@
 # helix-wezterm
 
-Turning Helix into an IDE with the help of WezTerm and CLI tools
+[Turning Helix into an IDE with the help of WezTerm and CLI tools](https://quantonganh.com/2023/08/19/turn-helix-into-ide.md)
 
 ![Helix as IDE](https://github.com/quantonganh/blog-posts/blob/main/2023/08/19/hx-ide.gif)
 
@@ -37,6 +37,24 @@ $ bpkg install quantonganh/helix-wezterm -g
 ```
 
 ## Usage
+
+Ensure that you're using [fish shell](https://fishshell.com/) with the [fish_title](https://fishshell.com/docs/current/cmds/fish_title.html) [function](https://github.com/fish-shell/fish-shell/blob/master/share/functions/fish_title.fish). This will allow you to see `hx` in the pane title when listing panes:
+
+```sh
+  {
+    "window_id": 0,
+    "tab_id": 167,
+    "pane_id": 350,
+    "workspace": "default",
+    "size": {
+      "rows": 48,
+      "cols": 175,
+      "pixel_width": 2975,
+      "pixel_height": 1776,
+      "dpi": 144
+    },
+    "title": "hx . ~/C/p/helix-wezterm",
+```
 
 Install the requirements:
 
