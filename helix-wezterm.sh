@@ -98,26 +98,30 @@ case "$1" in
     esac
     echo "$run_command" | $send_to_bottom_pane
     ;;
-  "test_all")
-    split_pane_down
+  "test")
     case "$extension" in
       "go")
-        run_command="go test -v ./...; if [ \$status = 0 ]; wezterm cli activate-pane-direction up; end;"
+        test_name=$(head -$line_number $filename | tail -1 | sed -n 's/func \([^(]*\).*/\1/p')
+        if [ -n "$test_name" ]; then
+          run_command="go test -run=$test_name -v ./$basedir/...; if [ \$status = 0 ]; wezterm cli activate-pane-direction up; end;"
+        else
+          run_command="go test -v ./$basedir/...; if [ \$status = 0 ]; wezterm cli activate-pane-direction up; end;"
+        fi
+        ;;
+      "hurl")
+        run_command="hurl --test --very-verbose --pretty-print --color --variable epoch=$(date +%s) $filename"
         ;;
       "rs")
-        run_command="cd $pwd/$(echo $filename | sed 's|src/.*$||'); cargo test; if [ \$status = 0 ]; wezterm cli activate-pane-direction up; end;"
+        test_name=$(head -$line_number $filename | tail -1 | sed -n 's/^.*fn \([^ ]*\)().*$/\1/p')
+        if [ -n $test_name ]; then
+          run_command="cd $pwd/$(echo $filename | sed 's|src/.*$||'); cargo test $test_name; if [ \$status = 0 ]; wezterm cli activate-pane-direction up; end;"
+        else
+          run_command="cd $pwd/$(echo $filename | sed 's|src/.*$||'); cargo test; if [ \$status = 0 ]; wezterm cli activate-pane-direction up; end;"
+        fi
         ;;
     esac
-    echo "$run_command" | $send_to_bottom_pane
-    ;;
-  "test_single")
-    test_name=$(head -$line_number $filename | tail -1 | sed -n 's/^.*fn \([^ ]*\)().*$/\1/p')
+
     split_pane_down
-    case "$extension" in
-      "rs")
-        run_command="cd $pwd/$(echo $filename | sed 's|src/.*$||'); cargo test $test_name; if [ \$status = 0 ]; wezterm cli activate-pane-direction up; end;"
-        ;;
-    esac
     echo "$run_command" | $send_to_bottom_pane
     ;;
   "tgpt")

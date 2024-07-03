@@ -16,8 +16,7 @@ The following sub-commands to helix-wezterm.sh are available:
  * `howdoi` Runs `howdoi` with clipboard contents in a new split window.
  * `open` Uses `gh browse` to open the current file and line number on Github
  * `run` Calls commands in a new split window. See source code details.
- * `test_all` Runs all tests with `go test` in new split window
- * `test_single` Runs a single test in new pane based for the current file using `cargo test`
+ * `test` Runs a test on a single function if the cursor is on that line; otherwise, run all tests in the current file.
  * `tgpt` Runs `tgpt` with clipboard contents in new pane.
 
 ## Installation
@@ -79,6 +78,5 @@ f = ":sh helix-wezterm.sh fzf"
 g = ":sh helix-wezterm.sh lazygit"
 o = ":sh helix-wezterm.sh open"
 r = ":sh helix-wezterm.sh run"
-s = ":sh helix-wezterm.sh test_single"
-t = ":sh helix-wezterm.sh test_all"
+t = ":sh helix-wezterm.sh test"
 ```
