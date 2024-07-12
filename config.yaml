@@ -1,0 +1,20 @@
+actions:
+  blame:
+    command: tig blame $filename +$line_number
+  explorer:
+    direction: left
+    percent: 20
+    command: br
+  fzf:
+    command: |
+      helix-fzf.sh \$(rg --line-number --column --no-heading --smart-case . | fzf --delimiter : --preview 'bat --style=full --color=always --highlight-line {2} {1}' --preview-window '~3,+{2}+3/2' | awk '{ print \$1 }' | cut -d: -f1,2,3)
+  lazygit:
+    command: lazygit
+  open:
+    command: gh browse $filename:$line_number
+  run:
+    extensions:
+      go: go run $basedir/*.go
+  test:
+    extensions:
+      go: go test -run=$test_name -v ./$basedir/...
