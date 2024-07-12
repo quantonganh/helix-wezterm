@@ -59,6 +59,7 @@ Install the requirements:
 
 - [bat](https://github.com/sharkdp/bat) for file previews
 - [broot](https://github.com/Canop/broot)
+- [envsubst](https://www.gnu.org/software/gettext/manual/html_node/envsubst-Invocation.html)
 - [fish shell](https://fishshell.com/)
 - [gh](https://cli.github.com/)
 - [howdoi](https://github.com/gleitz/howdoi)
@@ -66,6 +67,7 @@ Install the requirements:
 - [ripgrep](https://github.com/BurntSushi/ripgrep) for grep-like searching
 - [tig](https://jonas.github.io/tig/)
 - [tgpt](https://github.com/aandrew-me/tgpt)
+- [yq](https://github.com/mikefarah/yq)
 
 Add the following into `~/.config/helix/config.toml`:
 
