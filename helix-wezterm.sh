@@ -19,10 +19,10 @@ config_file="${HOME}/.config/helix-wezterm/config.yaml"
 # Get the action from the first argument
 action=$1
 
-# Extract the direction, percent and command from the YAML configuration
-direction=$(yq e ".actions.$action.direction" "$config_file")
-if [ "$direction" == "null" ]; then
-  direction=bottom
+# Extract the position, percent and command from the YAML configuration
+position=$(yq e ".actions.$action.position" "$config_file")
+if [ "$position" == "null" ]; then
+  position="bottom"
 fi
 
 percent=$(yq e ".actions.$action.percent" "$config_file")
@@ -32,6 +32,14 @@ fi
 command=$(yq e ".actions.$action.command" "$config_file")
 
 case "$action" in
+  "mock")
+    case "$extension" in
+      "go")
+        current_line=$(head -$line_number $filename | tail -1)
+        export interface_name=$(echo $current_line | sed -n 's/^type \([A-Za-z0-9_]*\) interface {$/\1/p')
+        ;;
+    esac
+    ;;
   "test")
     case "$extension" in
       "go")
@@ -44,7 +52,7 @@ case "$action" in
     ;;
 esac
   
-case "$direction" in
+case "$position" in
   "left")
     get_direction="left"
     ;;
@@ -59,18 +67,25 @@ case "$direction" in
     ;;
 esac
 
-# Split pane in direction
-split_pane() {
-  pane_id=$(wezterm cli get-pane-direction $get_direction)
-  if [ -z "$pane_id" ]; then
-    pane_id=$(wezterm cli split-pane --$direction --percent $percent)
+# Create a new pane in a specified direction or as a floating pane
+create_pane() {
+  if [ "$position" == "floating" ]; then
+    pane_id=$(wezterm cli list --format json | jq -r '.[] | select(.is_floating == true) | .pane_id')
+    if [ -z "$pane_id" ]; then
+      pane_id=$(wezterm cli float-pane)
+    fi
+  else
+    pane_id=$(wezterm cli get-pane-direction $get_direction)
+    if [ -z "$pane_id" ]; then
+      pane_id=$(wezterm cli split-pane --$position --percent $percent)
+    fi
   fi
 
-  wezterm cli activate-pane-direction $get_direction
+  wezterm cli activate-pane --pane-id $pane_id
   send_to_pane="wezterm cli send-text --pane-id $pane_id --no-paste"
 }
 
-split_pane $direction
+create_pane $position
 
 # Send command to the target pane
 ext=$(yq e ".actions.$action.extensions" "$config_file")
@@ -79,4 +94,8 @@ if [ "$ext" != "null" ]; then
   command=$(yq e ".actions.$action.extensions.$extension" "$config_file")
 fi
 
-echo $(echo $command | envsubst) | $send_to_pane
+expanded_command=$(echo $command | envsubst)
+if [ "$position" == "bottom" ]; then
+  expanded_command+="; if [ \$status = 0 ]; wezterm cli activate-pane-direction up; end"
+fi
+echo "$expanded_command" | $send_to_pane
