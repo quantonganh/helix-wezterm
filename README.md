@@ -37,7 +37,7 @@ $ bpkg install quantonganh/helix-wezterm -g
 
 ## Usage
 
-Ensure that you're using [fish shell](https://fishshell.com/) with the [fish_title](https://fishshell.com/docs/current/cmds/fish_title.html) [function](https://github.com/fish-shell/fish-shell/blob/master/share/functions/fish_title.fish). This will allow you to see `hx` in the pane title when listing panes:
+Ensure that you're using [fish shell](https://fishshell.com/) with the [fish_title](https://fishshell.com/docs/current/cmds/fish_title.html) [function](https://github.com/fish-shell/fish-shell/blob/master/share/functions/fish_title.fish). This will allow you to see `hx` in the pane title when listing panes using `wezterm cli list --format json`:
 
 ```sh
   {
