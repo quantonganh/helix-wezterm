@@ -53,7 +53,7 @@ brews:
   - repository:
       owner: quantonganh
       name: homebrew-tap
-    folder: Formula
+    directory: Formula
     homepage: https://github.com/quantonganh/helix-wezterm
     description: >-
       Turning Helix into an IDE with the help of WezTerm and CLI tools
