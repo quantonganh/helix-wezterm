@@ -9,7 +9,7 @@ builds:
       - darwin_arm64
     hooks:
       post:
-        - cp helix-wezterm.sh dist/helix-wezterm_darwin_arm64/
+        - cp helix-wezterm.sh dist/helix-wezterm_darwin_arm64_v8.0/
   - id: helix-fzf
     main: dummy.go
     binary: helix-fzf.sh
@@ -17,7 +17,7 @@ builds:
       - darwin_arm64
     hooks:
       post:
-        - cp helix-fzf.sh dist/helix-fzf_darwin_arm64/
+        - cp helix-fzf.sh dist/helix-fzf_darwin_arm64_v8.0/
 
 archives:
   - format: tar.gz
