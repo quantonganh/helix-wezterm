@@ -9,12 +9,13 @@ export line_number=$(echo $status_line | awk '{ print $2}')
 
 pwd=$(PWD)
 export basedir=$(dirname "$filename")
+export binary_output=$(basename $basedir)
 basename=$(basename "$filename")
 basename_without_extension="${basename%.*}"
 extension="${filename##*.}"
 
 # Load the configuration file
-config_file="${HOME}/.config/helix-wezterm/config.yaml"
+config_file="${HOME}/.helix-wezterm.yaml"
 
 # Get the action from the first argument
 action=$1
@@ -50,6 +51,13 @@ case "$action" in
         ;;
     esac
     ;;
+  "run")
+    case "$basename" in
+      "justfile")
+        export recipe=$(head -$line_number $filename | tail -1 | sed -n 's/:$//')
+        ;;
+    esac
+    ;;
 esac
   
 case "$position" in
@@ -70,9 +78,14 @@ esac
 # Create a new pane in a specified direction or as a floating pane
 create_pane() {
   if [ "$position" == "floating" ]; then
+    is_zoomed=$(wezterm cli list --format json | jq -r ".[] | select(.pane_id == $WEZTERM_PANE) | .is_zoomed")
+    if [ "$is_zoomed" == "true" ]; then
+      wezterm cli zoom-pane --unzoom
+    fi
+    
     pane_id=$(wezterm cli list --format json | jq -r '.[] | select(.is_floating == true) | .pane_id')
     if [ -z "$pane_id" ]; then
-      pane_id=$(wezterm cli float-pane)
+      pane_id=$(wezterm cli spawn --floating-pane)
     fi
   else
     pane_id=$(wezterm cli get-pane-direction $get_direction)
@@ -94,8 +107,5 @@ if [ "$ext" != "null" ]; then
   command=$(yq e ".actions.$action.extensions.$extension" "$config_file")
 fi
 
-expanded_command=$(echo $command | envsubst)
-if [ "$position" == "bottom" ]; then
-  expanded_command+="; if [ \$status = 0 ]; wezterm cli activate-pane-direction up; end"
-fi
-echo "$expanded_command" | $send_to_pane
+expanded_command=$(echo $command | envsubst '$WEZTERM_PANE,$basedir,$binary_output,$filename,$line_number,$interface_name,$test_name')
+echo "$expanded_command\r" | $send_to_pane
