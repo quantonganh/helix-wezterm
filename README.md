@@ -4,21 +4,6 @@
 
 ![Helix as IDE](https://github.com/quantonganh/blog-posts/blob/main/2023/08/19/hx-ide.gif)
 
-## Features
-
-The following sub-commands to helix-wezterm.sh are available:
-
- * `blame` Uses `tig` to open a "Git blame" in a split view for the current line
- * `check` Runs `cargo check` in a split window
- * `exlorer` Runs `broot` in left-side pane to open file explorer
- * `lazygit` Runs `lazygit` is split pane.
- * `fzf` Runs ripgrep to search through every line in the project. Similar to global_search
- * `howdoi` Runs `howdoi` with clipboard contents in a new split window.
- * `open` Uses `gh browse` to open the current file and line number on Github
- * `run` Calls commands in a new split window. See source code details.
- * `test` Runs a test on a single function if the cursor is on that line; otherwise, run all tests in the current file.
- * `tgpt` Runs `tgpt` with clipboard contents in new pane.
-
 ## Installation
 
 You can simply download [helix wezterm.sh](./helix-wezterm.sh) and [helix-fzf.sh](./helix-fzf.sh) to `~/.local/bin` and then add this directory to your `$PATH`.
@@ -36,6 +21,29 @@ $ bpkg install quantonganh/helix-wezterm -g
 ```
 
 ## Usage
+
+```sh
+./helix-wezterm.sh -h
+Usage: ./helix-wezterm.sh <action> [OPTIONS]
+
+Options:
+  -h, --help      Display this help message and exit
+
+Available actions:
+- blame: Show blame for the current file and line number
+- explorer: Open the file explorer
+- generate_tests: Generate Go tests for the current file
+- lazygit: Open terminal UI for git commands
+- lint: Lint the current file
+- mock: Generate mocks
+- navi: Open an interactive cheatsheet tool
+- open: Open the current file and line number in the web browser
+- present: Present the current file
+- query: Query database
+- run: Run the current file
+- slumber: Open a HTTP client
+- test: Test the current file
+```
 
 Ensure that you're using [fish shell](https://fishshell.com/) with the [fish_title](https://fishshell.com/docs/current/cmds/fish_title.html) [function](https://github.com/fish-shell/fish-shell/blob/master/share/functions/fish_title.fish). This will allow you to see `hx` in the pane title when listing panes using `wezterm cli list --format json`:
 
@@ -55,19 +63,31 @@ Ensure that you're using [fish shell](https://fishshell.com/) with the [fish_tit
     "title": "hx . ~/C/p/helix-wezterm",
 ```
 
-Install the requirements:
+Download [the configuration file](.helix-wezterm.yaml), and place it in your $HOME directory.
+Customize the file to specify which CLI tool you want to use for each action.
 
-- [bat](https://github.com/sharkdp/bat) for file previews
-- [broot](https://github.com/Canop/broot)
+Install the following requirements:
+
 - [envsubst](https://www.gnu.org/software/gettext/manual/html_node/envsubst-Invocation.html)
 - [fish shell](https://fishshell.com/)
-- [gh](https://cli.github.com/)
-- [howdoi](https://github.com/gleitz/howdoi)
-- [lazygit](https://github.com/jesseduffield/lazygit)
-- [ripgrep](https://github.com/BurntSushi/ripgrep) for grep-like searching
-- [tig](https://jonas.github.io/tig/)
-- [tgpt](https://github.com/aandrew-me/tgpt)
 - [yq](https://github.com/mikefarah/yq)
+
+Additionally, it's recommended to install the following CLI tools:
+
+- [bat](https://github.com/sharkdp/bat) for file previews
+- [fzf](https://github.com/junegunn/fzf)
+- [gh](https://cli.github.com/)
+- [glow](https://github.com/charmbracelet/glow)
+- [hurl](https://hurl.dev/)
+- [lazygit](https://github.com/jesseduffield/lazygit)
+- [lazysql](https://github.com/jorgerojas26/lazysql)
+- [mods](https://github.com/charmbracelet/mods)
+- [navi](https://github.com/denisidoro/navi)
+- [presenterm](https://github.com/mfontanini/presenterm)
+- [ripgrep](https://github.com/BurntSushi/ripgrep) for grep-like searching
+- [slumber](https://github.com/LucasPickering/slumber)
+- [tig](https://jonas.github.io/tig/)
+- [yazi](https://github.com/sxyazi/yazi)
 
 Add the following into `~/.config/helix/config.toml`:
 
@@ -76,9 +96,13 @@ Add the following into `~/.config/helix/config.toml`:
 b = ":sh helix-wezterm.sh blame"
 c = ":sh helix-wezterm.sh check"
 e = ":sh helix-wezterm.sh explorer"
-f = ":sh helix-wezterm.sh fzf"
 g = ":sh helix-wezterm.sh lazygit"
 o = ":sh helix-wezterm.sh open"
+q = ":sh helix-wezterm.sh query"
 r = ":sh helix-wezterm.sh run"
+s = ":sh helix-wezterm.sh slumber"
+m = ":sh helix-wezterm.sh mock"
+n = ":sh helix-wezterm.sh navi"
+p = ":sh helix-wezterm.sh present"
 t = ":sh helix-wezterm.sh test"
 ```
