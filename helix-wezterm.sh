@@ -3,7 +3,7 @@
 set -x
 
 # Get the current filename and the line number from the status line
-status_line=$(wezterm cli get-text | rg -e "(?:NORMAL|INSERT|SELECT)\s+[\x{2800}-\x{28FF}]*\s+(\S*)\s[^│]* (\d+):*.*" -o --replace '$1 $2')
+status_line=$(wezterm cli get-text | perl -ne 'print "$1 $2\n" if /(?:NOR|NORMAL|INS|INSERT|SEL|SELECT)\s+[\x{2800}-\x{28FF}]*\s+(\S*)\s[^│]* (\d+):*.*/')
 export filename=$(echo $status_line | awk '{ print $1}')
 export line_number=$(echo $status_line | awk '{ print $2}')
 
