@@ -1,7 +1,5 @@
 #!/bin/sh
 
-set -x
-
 # Get the current filename and the line number from the status line
 status_line=$(wezterm cli get-text | perl -ne 'print "$1 $2\n" if /(?:NOR|NORMAL|INS|INSERT|SEL|SELECT)\s+[\x{2800}-\x{28FF}]*\s+(\S*)\s[^│]* (\d+):*.*/')
 export filename=$(echo $status_line | awk '{ print $1}')
@@ -16,6 +14,25 @@ extension="${filename##*.}"
 
 # Load the configuration file
 config_file="${HOME}/.helix-wezterm.yaml"
+
+usage() {
+    echo "Usage: $0 <action> [OPTIONS]"
+    echo ""
+    echo "Options:"
+    echo "  -h, --help      Display this help message and exit"
+    echo ""
+    echo "Available actions:"
+    yq eval '.actions | to_entries | .[] | "- \(.key): \(.value.description)"' $config_file
+    exit 0
+}
+
+for arg in "$@"; do
+  case $arg in
+    -h|--help)
+      usage
+      ;;
+  esac
+done
 
 # Get the action from the first argument
 action=$1
