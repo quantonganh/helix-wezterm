@@ -74,10 +74,12 @@ Install the following requirements:
 
 Additionally, it's recommended to install the following CLI tools:
 
+- [aichat](https://github.com/sigoden/aichat)
 - [bat](https://github.com/sharkdp/bat) for file previews
 - [fzf](https://github.com/junegunn/fzf)
 - [gh](https://cli.github.com/)
 - [glow](https://github.com/charmbracelet/glow)
+- [gum](https://github.com/charmbracelet/gum)
 - [hurl](https://hurl.dev/)
 - [lazygit](https://github.com/jesseduffield/lazygit)
 - [lazysql](https://github.com/jorgerojas26/lazysql)
@@ -105,4 +107,10 @@ m = ":sh helix-wezterm.sh mock"
 n = ":sh helix-wezterm.sh navi"
 p = ":sh helix-wezterm.sh present"
 t = ":sh helix-wezterm.sh test"
+
+[keys.select.";"]
+a = [
+    "yank_to_clipboard",
+    ":sh helix-wezterm.sh ai"
+]
 ```
