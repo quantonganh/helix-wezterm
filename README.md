@@ -45,39 +45,23 @@ Available actions:
 - test: Test the current file
 ```
 
-Ensure that you're using [fish shell](https://fishshell.com/) with the [fish_title](https://fishshell.com/docs/current/cmds/fish_title.html) [function](https://github.com/fish-shell/fish-shell/blob/master/share/functions/fish_title.fish). This will allow you to see `hx` in the pane title when listing panes using `wezterm cli list --format json`:
-
-```sh
-  {
-    "window_id": 0,
-    "tab_id": 167,
-    "pane_id": 350,
-    "workspace": "default",
-    "size": {
-      "rows": 48,
-      "cols": 175,
-      "pixel_width": 2975,
-      "pixel_height": 1776,
-      "dpi": 144
-    },
-    "title": "hx . ~/C/p/helix-wezterm",
-```
-
 Download [the configuration file](.helix-wezterm.yaml), and place it in your $HOME directory.
 Customize the file to specify which CLI tool you want to use for each action.
 
 Install the following requirements:
 
 - [envsubst](https://www.gnu.org/software/gettext/manual/html_node/envsubst-Invocation.html)
-- [fish shell](https://fishshell.com/)
 - [yq](https://github.com/mikefarah/yq)
 
 Additionally, it's recommended to install the following CLI tools:
 
+- [aichat](https://github.com/sigoden/aichat)
 - [bat](https://github.com/sharkdp/bat) for file previews
+- [fish shell](https://fishshell.com/)
 - [fzf](https://github.com/junegunn/fzf)
 - [gh](https://cli.github.com/)
 - [glow](https://github.com/charmbracelet/glow)
+- [gum](https://github.com/charmbracelet/gum)
 - [hurl](https://hurl.dev/)
 - [lazygit](https://github.com/jesseduffield/lazygit)
 - [lazysql](https://github.com/jorgerojas26/lazysql)
@@ -105,4 +89,10 @@ m = ":sh helix-wezterm.sh mock"
 n = ":sh helix-wezterm.sh navi"
 p = ":sh helix-wezterm.sh present"
 t = ":sh helix-wezterm.sh test"
+
+[keys.select.";"]
+a = [
+    "yank_to_clipboard",
+    ":sh helix-wezterm.sh ai"
+]
 ```

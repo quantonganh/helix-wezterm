@@ -1,4 +1,7 @@
 actions:
+  ai:
+    position: right
+    command: pbpaste | aichat --code --session "$session" $(gum input --placeholder "prompt") && gum confirm "Accept suggestion?" && aichat --session "$session" --info | yq '.messages | map(select(.role == "assistant")) | .[-1].content' | gsed -i "${line_number}r /dev/stdin" $filename && bash -x helix-reload.sh $WEZTERM_PANE
   blame:
     description: Show blame for the current file and line number
     command: tig blame $filename +$line_number
