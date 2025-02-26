@@ -34,7 +34,7 @@ actions:
     command: helix-browse.sh $filename $line_number
   present:
     description: Present the current file
-    position: right
+    position: window
     extensions:
       md: presenterm --theme terminal-dark $filename
   query:
