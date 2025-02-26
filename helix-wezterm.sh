@@ -13,7 +13,7 @@ basename_without_extension="${basename%.*}"
 extension="${filename##*.}"
 
 # Load the configuration file
-config_file="${HOME}/.helix-wezterm.yaml"
+config_file="${XDG_CONFIG_HOME:-$HOME}/.helix-wezterm.yaml"
 
 usage() {
     echo "Usage: $0 <action> [OPTIONS]"

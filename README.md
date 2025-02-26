@@ -45,7 +45,7 @@ Available actions:
 - test: Test the current file
 ```
 
-Download [the configuration file](.helix-wezterm.yaml), and place it in your $HOME directory.
+Download [the configuration file](.helix-wezterm.yaml), and place it in either `$XDG_CONFIG_HOME` if set, or `$HOME` directory.
 Customize the file to specify which CLI tool you want to use for each action.
 
 Install the following requirements:
