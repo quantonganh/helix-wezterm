@@ -29,9 +29,6 @@ actions:
     description: Open an interactive cheatsheet tool
     command: navi
     position: floating
-  open:
-    description: Open the current file and line number in the web browser
-    command: helix-browse.sh $filename $line_number
   present:
     description: Present the current file
     position: window

@@ -61,6 +61,19 @@ case "$action" in
         ;;
     esac
     ;;
+  "open")
+    remote_url=$(git config remote.origin.url)
+    if [[ $remote_url == *"github.com"* ]]; then
+      gh browse $filename:$line_number
+    else
+      current_branch=$(git rev-parse --abbrev-ref HEAD)
+      if [[ $remote_url == "git@"* ]]; then
+        open $(echo $remote_url | sed -e 's|:|/|' -e 's|\.git||' -e 's|git@|https://|')/-/blob/${current_branch}/${filename}#L${line_number}
+      else
+        open $(echo $remote_url | sed -e 's|\.git||')/-/blob/${current_branch}/${filename}#L${line_number}
+      fi
+    fi
+    ;;
   "test")
     case "$extension" in
       "go")
@@ -124,14 +137,17 @@ create_pane() {
   send_to_pane="wezterm cli send-text --pane-id $pane_id --no-paste"
 }
 
-create_pane $position
+act=$(yq e ".actions.$action" "$config_file")
+if [ "$act" != "null" ]; then
+  create_pane
 
-# Send command to the target pane
-ext=$(yq e ".actions.$action.extensions" "$config_file")
-if [ "$ext" != "null" ]; then
-  extension="${filename##*.}"
-  command=$(yq e ".actions.$action.extensions.$extension" "$config_file")
+  # Send command to the target pane
+  ext=$(yq e ".actions.$action.extensions" "$config_file")
+  if [ "$ext" != "null" ]; then
+    extension="${filename##*.}"
+    command=$(yq e ".actions.$action.extensions.$extension" "$config_file")
+  fi
+
+  expanded_command=$(echo $command | envsubst '$WEZTERM_PANE,$basedir,$binary_output,$filename,$line_number,$interface_name,$test_name,$session')
+  echo "$expanded_command\r" | $send_to_pane
 fi
-
-expanded_command=$(echo $command | envsubst '$WEZTERM_PANE,$basedir,$binary_output,$filename,$line_number,$interface_name,$test_name,$session')
-echo "$expanded_command\r" | $send_to_pane
