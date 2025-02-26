@@ -97,22 +97,28 @@ esac
 
 # Create a new pane in a specified direction or as a floating pane
 create_pane() {
-  if [ "$position" == "floating" ]; then
-    is_zoomed=$(wezterm cli list --format json | jq -r ".[] | select(.pane_id == $WEZTERM_PANE) | .is_zoomed")
-    if [ "$is_zoomed" == "true" ]; then
-      wezterm cli zoom-pane --unzoom
-    fi
+  case "$position" in
+    "floating")
+      is_zoomed=$(wezterm cli list --format json | jq -r ".[] | select(.pane_id == $WEZTERM_PANE) | .is_zoomed")
+      if [ "$is_zoomed" == "true" ]; then
+        wezterm cli zoom-pane --unzoom
+      fi
     
-    pane_id=$(wezterm cli list --format json | jq -r '.[] | select(.is_floating == true) | .pane_id')
-    if [ -z "$pane_id" ]; then
       pane_id=$(wezterm cli spawn --floating-pane)
-    fi
-  else
-    pane_id=$(wezterm cli get-pane-direction $get_direction)
-    if [ -z "$pane_id" ]; then
-      pane_id=$(wezterm cli split-pane --$position --percent $percent)
-    fi
-  fi
+      ;;
+    "window")
+      pane_id=$(wezterm cli spawn --cwd $pwd --new-window)
+      ;;
+    "tab")
+      pane_id=$(wezterm cli spawn --cwd $pwd)
+      ;;
+    *)
+      pane_id=$(wezterm cli get-pane-direction $get_direction)
+      if [ -z "$pane_id" ]; then
+        pane_id=$(wezterm cli split-pane --$position --percent $percent)
+      fi
+      ;;
+  esac
 
   wezterm cli activate-pane --pane-id $pane_id
   send_to_pane="wezterm cli send-text --pane-id $pane_id --no-paste"
