@@ -1,10 +1,10 @@
 actions:
   ai:
     position: right
-    command: pbpaste | aichat --code --session "$session" $(gum input --placeholder "prompt") && gum confirm "Accept suggestion?" && aichat --session "$session" --info | yq '.messages | map(select(.role == "assistant")) | .[-1].content' | gsed -i "${line_number}r /dev/stdin" $filename && bash -x helix-reload.sh $WEZTERM_PANE
+    command: pbpaste | aichat --code --session "$session" $(gum input --placeholder "prompt") && gum confirm "Accept suggestion?" && aichat --session "$session" --info | yq '.messages | map(select(.role == "assistant")) | .[-1].content' | gsed -i "${cursor_line}r /dev/stdin" $buffer_name && bash -x helix-reload.sh $WEZTERM_PANE
   blame:
     description: Show blame for the current file and line number
-    command: tig blame $filename +$line_number
+    command: tig blame $buffer_name +$cursor_line
     position: floating
   explorer:
     description: Open the file explorer
@@ -13,7 +13,7 @@ actions:
     command: YAZI_CONFIG_HOME=~/.config/yazi/filetree yazi
   generate_tests:
     description: Generate Go tests for the current file
-    command: gotests -w -all $filename
+    command: gotests -w -all $buffer_name
   lazygit:
     description: Open terminal UI for git commands
     command: lazygit
@@ -21,7 +21,7 @@ actions:
   lint:
     description: Lint the current file
     extensions:
-      go: golangci-lint run -v $filename
+      go: golangci-lint run -v $buffer_name
   mock:
     description: Generate mocks
     command: mockery --with-expecter --dir $basedir --name $interface_name
@@ -33,7 +33,7 @@ actions:
     description: Present the current file
     position: window
     extensions:
-      md: presenterm --theme terminal-dark $filename
+      md: presenterm --theme terminal-dark $buffer_name
   query:
     description: Query database
     command: lazysql
@@ -43,7 +43,7 @@ actions:
     position: floating
     extensions:
       go: go run $basedir/*.go
-      md: glow -p $filename
+      md: glow -p $buffer_name
       rs: cargo run
   slumber:
     description: Open a HTTP client
@@ -53,5 +53,5 @@ actions:
     description: Test the current file
     extensions:
       go: go test -run=$test_name -v ./$basedir/...
-      hurl: hurl --test --very-verbose --color $filename
+      hurl: hurl --test --very-verbose --color $buffer_name
       rs: cargo test

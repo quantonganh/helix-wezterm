@@ -77,18 +77,17 @@ Add the following into `~/.config/helix/config.toml`:
 
 ```toml
 [keys.normal.space.","]
-b = ":sh helix-wezterm.sh blame"
-c = ":sh helix-wezterm.sh check"
+b = ":sh helix-wezterm.sh blame %{buffer_name} %{cursor_line}"
 e = ":sh helix-wezterm.sh explorer"
 g = ":sh helix-wezterm.sh lazygit"
-o = ":sh helix-wezterm.sh open"
+o = ":sh helix-wezterm.sh open %{buffer_name} %{cursor_line}"
 q = ":sh helix-wezterm.sh query"
-r = ":sh helix-wezterm.sh run"
+r = ":sh helix-wezterm.sh run %{buffer_name}"
 s = ":sh helix-wezterm.sh slumber"
 m = ":sh helix-wezterm.sh mock"
 n = ":sh helix-wezterm.sh navi"
-p = ":sh helix-wezterm.sh present"
-t = ":sh helix-wezterm.sh test"
+p = ":sh helix-wezterm.sh present %{buffer_name}"
+t = ":sh helix-wezterm.sh test %{buffer_name}"
 
 [keys.select.";"]
 a = [

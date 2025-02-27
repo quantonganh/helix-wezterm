@@ -1,16 +1,16 @@
 #!/bin/sh
 
-# Get the current filename and the line number from the status line
-status_line=$(wezterm cli get-text | perl -ne 'print "$1 $2\n" if /(?:NOR|NORMAL|INS|INSERT|SEL|SELECT)\s+[\x{2800}-\x{28FF}]*\s+(\S*)\s[^│]* (\d+):*.*/')
-export filename=$(echo $status_line | awk '{ print $1}')
-export line_number=$(echo $status_line | awk '{ print $2}')
+# Get the action from the first argument
+action=$1
+export buffer_name=$2
+export cursor_line=$3
 
 pwd=$(PWD)
-export basedir=$(dirname "$filename")
+export basedir=$(dirname "$buffer_name")
 export binary_output=$(basename $basedir)
-basename=$(basename "$filename")
+basename=$(basename "$buffer_name")
 basename_without_extension="${basename%.*}"
-extension="${filename##*.}"
+extension="${buffer_name##*.}"
 
 # Load the configuration file
 config_file="${XDG_CONFIG_HOME:-$HOME}/.helix-wezterm.yaml"
@@ -34,9 +34,6 @@ for arg in "$@"; do
   esac
 done
 
-# Get the action from the first argument
-action=$1
-
 # Extract the position, percent and command from the YAML configuration
 position=$(yq e ".actions.$action.position" "$config_file")
 if [ "$position" == "null" ]; then
@@ -51,12 +48,12 @@ command=$(yq e ".actions.$action.command" "$config_file")
 
 case "$action" in
   "ai")
-    export session=$(basename "$pwd")_$(echo "$filename" | tr "/" "_")
+    export session=$(basename "$pwd")_$(echo "$buffer_name" | tr "/" "_")
     ;;
   "mock")
     case "$extension" in
       "go")
-        current_line=$(head -$line_number $filename | tail -1)
+        current_line=$(head -$cursor_line $buffer_name | tail -1)
         export interface_name=$(echo $current_line | sed -n 's/^type \([A-Za-z0-9_]*\) interface {$/\1/p')
         ;;
     esac
@@ -64,30 +61,30 @@ case "$action" in
   "open")
     remote_url=$(git config remote.origin.url)
     if [[ $remote_url == *"github.com"* ]]; then
-      gh browse $filename:$line_number
+      gh browse $buffer_name:$cursor_line
     else
       current_branch=$(git rev-parse --abbrev-ref HEAD)
       if [[ $remote_url == "git@"* ]]; then
-        open $(echo $remote_url | sed -e 's|:|/|' -e 's|\.git||' -e 's|git@|https://|')/-/blob/${current_branch}/${filename}#L${line_number}
+        open $(echo $remote_url | sed -e 's|:|/|' -e 's|\.git||' -e 's|git@|https://|')/-/blob/${current_branch}/${buffer_name}#L${line_number}
       else
-        open $(echo $remote_url | sed -e 's|\.git||')/-/blob/${current_branch}/${filename}#L${line_number}
+        open $(echo $remote_url | sed -e 's|\.git||')/-/blob/${current_branch}/${buffer_name}#L${line_number}
       fi
     fi
     ;;
   "test")
     case "$extension" in
       "go")
-        export test_name=$(head -$line_number $filename | tail -1 | sed -n 's/func \([^(]*\).*/\1/p')
+        export test_name=$(head -$cursor_line $buffer_name | tail -1 | sed -n 's/func \([^(]*\).*/\1/p')
         ;;
       "rs")
-        export test_name=$(head -$line_number $filename | tail -1 | sed -n 's/^.*fn \([^ ]*\)().*$/\1/p')
+        export test_name=$(head -$cursor_line $buffer_name | tail -1 | sed -n 's/^.*fn \([^ ]*\)().*$/\1/p')
         ;;
     esac
     ;;
   "run")
     case "$basename" in
       "justfile")
-        export recipe=$(head -$line_number $filename | tail -1 | sed -n 's/:$//')
+        export recipe=$(head -$cursor_line $buffer_name | tail -1 | sed -n 's/:$//')
         ;;
     esac
     ;;
@@ -144,10 +141,10 @@ if [ "$act" != "null" ]; then
   # Send command to the target pane
   ext=$(yq e ".actions.$action.extensions" "$config_file")
   if [ "$ext" != "null" ]; then
-    extension="${filename##*.}"
+    extension="${buffer_name##*.}"
     command=$(yq e ".actions.$action.extensions.$extension" "$config_file")
   fi
 
-  expanded_command=$(echo $command | envsubst '$WEZTERM_PANE,$basedir,$binary_output,$filename,$line_number,$interface_name,$test_name,$session')
+  expanded_command=$(echo $command | envsubst '$WEZTERM_PANE,$basedir,$binary_output,$buffer_name,$cursor_line,$interface_name,$test_name,$session')
   echo "$expanded_command\r" | $send_to_pane
 fi
