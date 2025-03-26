@@ -76,6 +76,10 @@ case "$action" in
       "go")
         export test_name=$(head -$cursor_line $buffer_name | tail -1 | sed -n 's/func \([^(]*\).*/\1/p')
         ;;
+      "hurl")
+        current_line=$(head -$cursor_line $buffer_name | tail -1)
+        export entry=$(egrep 'POST|PATCH|PUT|DELETE|GET' $buffer_name | grep -n "$current_line" | awk -F: '{ print $1 }')
+        ;;
       "rs")
         export test_name=$(head -$cursor_line $buffer_name | tail -1 | sed -n 's/^.*fn \([^ ]*\)().*$/\1/p')
         ;;
@@ -145,6 +149,6 @@ if [ "$act" != "null" ]; then
     command=$(yq e ".actions.$action.extensions.$extension" "$config_file")
   fi
 
-  expanded_command=$(echo $command | envsubst '$WEZTERM_PANE,$basedir,$binary_output,$buffer_name,$cursor_line,$interface_name,$test_name,$session')
+  expanded_command=$(echo $command | envsubst '$WEZTERM_PANE,$basedir,$binary_output,$buffer_name,$cursor_line,$interface_name,$test_name,$session,$entry')
   echo "$expanded_command\r" | $send_to_pane
 fi
