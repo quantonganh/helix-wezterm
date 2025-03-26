@@ -65,9 +65,9 @@ case "$action" in
     else
       current_branch=$(git rev-parse --abbrev-ref HEAD)
       if [[ $remote_url == "git@"* ]]; then
-        open $(echo $remote_url | sed -e 's|:|/|' -e 's|\.git||' -e 's|git@|https://|')/-/blob/${current_branch}/${buffer_name}#L${line_number}
+        open $(echo $remote_url | sed -e 's|:|/|' -e 's|\.git||' -e 's|git@|https://|')/-/blob/${current_branch}/${buffer_name}#L${cursor_line}
       else
-        open $(echo $remote_url | sed -e 's|\.git||')/-/blob/${current_branch}/${buffer_name}#L${line_number}
+        open $(echo $remote_url | sed -e 's|\.git||')/-/blob/${current_branch}/${buffer_name}#L${cursor_line}
       fi
     fi
     ;;
