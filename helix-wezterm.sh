@@ -121,7 +121,7 @@ create_pane() {
       tab_id=$(wezterm cli list --format json | jq -r ".[] | select(.pane_id == $WEZTERM_PANE) | .tab_id")
       # Check if there is a floating pane containing a shell in the current tab
       pane_id=$(wezterm cli list --format json | jq --argjson tab_id $tab_id -r '.[] | select(.tab_id == $tab_id and .is_floating == true and (.title | startswith("~/")))' | jq -s 'sort_by(.pane_id) | last | .pane_id')
-      if [ -z "$pane_id" ]; then
+      if [ "$pane_id" == "null" ]; then
         pane_id=$(wezterm cli spawn --floating-pane)
       fi
 
