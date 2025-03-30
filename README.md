@@ -93,6 +93,6 @@ t = ":sh helix-wezterm.sh test %{buffer_name}"
 [keys.select.";"]
 a = [
     "yank_to_clipboard",
-    ":sh helix-wezterm.sh ai"
+    ":sh helix-wezterm.sh ai %{buffer_name}"
 ]
 ```
