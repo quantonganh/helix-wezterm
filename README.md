@@ -51,6 +51,7 @@ Customize the file to specify which CLI tool you want to use for each action.
 Install the following requirements:
 
 - [envsubst](https://www.gnu.org/software/gettext/manual/html_node/envsubst-Invocation.html)
+- [jq](https://jqlang.org/)
 - [yq](https://github.com/mikefarah/yq)
 
 Additionally, it's recommended to install the following CLI tools:
