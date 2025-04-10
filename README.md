@@ -48,6 +48,15 @@ Available actions:
 Download [the configuration file](.helix-wezterm.yaml), and place it in either `$XDG_CONFIG_HOME` if set, or `$HOME` directory.
 Customize the file to specify which CLI tool you want to use for each action.
 
+```yaml
+run:
+  position: bottom
+  extensions:
+    go: go run $basedir/*.go
+```
+
+The available values for the position are `window`, `tab`, `top`, `bottom`, `left`, `right`, `floating`. Please note that, to use floating mode, you have to compile [this PR](https://github.com/wezterm/wezterm/pull/5576) from the source code.
+
 Install the following requirements:
 
 - [envsubst](https://www.gnu.org/software/gettext/manual/html_node/envsubst-Invocation.html)
