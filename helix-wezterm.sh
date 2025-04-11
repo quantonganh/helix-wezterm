@@ -155,6 +155,5 @@ if [ "$act" != "null" ]; then
     command=$(yq e ".actions.$action.extensions.$extension" "$config_file")
   fi
 
-  expanded_command=$(echo $command | envsubst '$WEZTERM_PANE,$basedir,$binary_output,$buffer_name,$cursor_line,$interface_name,$test_name,$session,$entry')
-  echo "$expanded_command\r" | $send_to_pane
+  eval echo "$command\r" | $send_to_pane
 fi
