@@ -113,15 +113,15 @@ esac
 create_pane() {
   case "$position" in
     "floating")
-      is_zoomed=$(wezterm cli list --format json | jq -r ".[] | select(.pane_id == $WEZTERM_PANE) | .is_zoomed")
+      is_zoomed=$(wezterm cli list --format json | yq -r ".[] | select(.pane_id == $WEZTERM_PANE) | .is_zoomed")
       if [ "$is_zoomed" == "true" ]; then
         wezterm cli zoom-pane --unzoom
       fi
     
-      tab_id=$(wezterm cli list --format json | jq -r ".[] | select(.pane_id == $WEZTERM_PANE) | .tab_id")
+      tab_id=$(wezterm cli list --format json | yq -r ".[] | select(.pane_id == $WEZTERM_PANE) | .tab_id")
       # Check if there is a floating pane containing a shell in the current tab
-      pane_id=$(wezterm cli list --format json | jq --argjson tab_id $tab_id -r '.[] | select(.tab_id == $tab_id and .is_floating == true and (.title | startswith("~/")))' | jq -s 'sort_by(.pane_id) | last | .pane_id')
-      if [ "$pane_id" == "null" ]; then
+      pane_id=$(wezterm cli list --format json | yq -p=json -o=json '.[] | select(.tab_id == $tab_id and .is_floating == true and (.title | match("~/"))) | .pane_id')
+      if [ -z "$pane_id" ]; then
         pane_id=$(wezterm cli spawn --floating-pane)
       fi
 

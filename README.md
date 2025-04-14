@@ -60,7 +60,6 @@ The available values for the position are `window`, `tab`, `top`, `bottom`, `lef
 Install the following requirements:
 
 - [envsubst](https://www.gnu.org/software/gettext/manual/html_node/envsubst-Invocation.html)
-- [jq](https://jqlang.org/)
 - [yq](https://github.com/mikefarah/yq) *(Ensure that you are using the `yq` implementation written in Golang, not the one [written in Python](https://github.com/kislyuk/yq))*
 
 Additionally, it's recommended to install the following CLI tools:
