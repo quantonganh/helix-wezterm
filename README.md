@@ -99,8 +99,5 @@ p = ":sh helix-wezterm.sh present %{buffer_name}"
 t = ":sh helix-wezterm.sh test %{buffer_name}"
 
 [keys.select.";"]
-a = [
-    "yank_to_clipboard",
-    ":sh helix-wezterm.sh ai %{buffer_name}"
-]
+a = ":sh echo '%{selection}' > /tmp/aichat; helix-wezterm.sh ai %{buffer_name}"
 ```

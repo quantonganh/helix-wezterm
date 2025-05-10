@@ -48,6 +48,7 @@ command=$(yq e ".actions.$action.command" "$config_file")
 
 case "$action" in
   "ai")
+    export selection=$(cat)
     export session=$(basename "$pwd")_$(echo "$buffer_name" | tr "/" "_")
     ;;
   "mock")
@@ -155,6 +156,6 @@ if [ "$act" != "null" ]; then
     command=$(yq e ".actions.$action.extensions.$extension" "$config_file")
   fi
 
-  expanded_command=$(echo $command | envsubst '$WEZTERM_PANE,$basedir,$binary_output,$buffer_name,$cursor_line,$interface_name,$test_name,$session,$entry')
+  expanded_command=$(echo $command | envsubst '$WEZTERM_PANE,$basedir,$binary_output,$buffer_name,$cursor_line,$selection,$interface_name,$test_name,$session,$entry')
   echo "$expanded_command\r" | $send_to_pane
 fi
