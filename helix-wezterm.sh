@@ -79,7 +79,10 @@ case "$action" in
         ;;
       "hurl")
         current_line=$(head -$cursor_line $buffer_name | tail -1)
-        export entry=$(egrep 'POST|PATCH|PUT|DELETE|GET' $buffer_name | grep -n "$current_line" | awk -F: '{ print $1 }')
+        export entry=$(awk -v cur_line=$cursor_line '
+          /^(GET|POST|PUT|DELETE|PATCH|HEAD|OPTIONS)/ { entry_line = NR; entry_num++ }
+          NR == cur_line { print entry_num }
+        ' "$buffer_name")
         ;;
       "rs")
         export test_name=$(head -$cursor_line $buffer_name | tail -1 | sed -n 's/^.*fn \([^ ]*\)().*$/\1/p')
