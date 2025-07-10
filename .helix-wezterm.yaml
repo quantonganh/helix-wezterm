@@ -45,8 +45,7 @@ actions:
       go: go run $basedir/*.go
       md: glow -p $buffer_name
       rs: cargo run
-      java: sh -x hxide-java.sh
-
+      java: hxide-java.sh run $buffer_name
   slumber:
     description: Open a HTTP client
     position: floating
@@ -57,3 +56,4 @@ actions:
       go: go test -run=$test_name -v ./$basedir/...
       hurl: hurl --test --very-verbose --color $buffer_name
       rs: cargo test
+      java: hxide-java.sh test $buffer_name
